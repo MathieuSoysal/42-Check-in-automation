@@ -1,4 +1,4 @@
-package io.github.pseudo;
+package io.github.mathieusoysal;
 
 public class App {
     
