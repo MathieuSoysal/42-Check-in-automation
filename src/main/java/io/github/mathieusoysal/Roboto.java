@@ -35,4 +35,11 @@ public class Roboto implements AutoCloseable {
         playwright.close();
     }
 
+    public void connection(String string, String string2) {
+    }
+
+    public Page getPage() {
+        return null;
+    }
+
 }
