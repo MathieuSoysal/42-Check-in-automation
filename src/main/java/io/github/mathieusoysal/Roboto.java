@@ -30,16 +30,19 @@ public class Roboto implements AutoCloseable {
         this(URL);
     }
 
+    public void connection(String email, String password) {
+        page.locator("input[type='email']").first().fill(email);
+        page.locator("input[type='password']").first().fill(password);
+    }
+
+    @Override
     public void close() {
         browser.close();
         playwright.close();
     }
 
-    public void connection(String string, String string2) {
-    }
-
     public Page getPage() {
-        return null;
+        return page;
     }
 
 }
