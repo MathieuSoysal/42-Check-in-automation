@@ -62,13 +62,19 @@ class RobotoTest {
     }
 
     @Test
-    void clickSubmitButton_test() {
+    void clickSubmitButton_test() throws InterruptedException {
         Roboto roboto = new Roboto();
         assertDoesNotThrow(() -> {
             roboto.connection("email", "password");
             roboto.clickSubmitButton();
         });
-        assertThat(roboto.getPage().locator("div[role='alert']").first()).hasValue("email ou mot de passe incorrect.");
+        assertThat(roboto.getPage().locator("div[role='alert']").first()).hasText(
+                """
+                        email ou mot de passe incorrect.
+
+                        ×
+
+                        """);
         roboto.close();
     }
 

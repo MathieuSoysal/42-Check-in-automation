@@ -6,6 +6,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.TimeoutError;
 
+import io.github.mathieusoysal.exceptions.ConnectionButtonNotFoundException;
 import io.github.mathieusoysal.exceptions.EmailFieldNotFoundException;
 import io.github.mathieusoysal.exceptions.PasswordFieldNotFoundException;
 
@@ -39,25 +40,28 @@ public class Roboto implements AutoCloseable {
     }
 
     public void connection(String email, String password)
-            throws EmailFieldNotFoundException, PasswordFieldNotFoundException {
+            throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException {
         page.setDefaultTimeout(5000);
         fillEmailField(email);
         fillPasswordField(password);
+        clickSubmitButton();
     }
 
     void fillEmailField(String email) throws EmailFieldNotFoundException {
+        String selector = "input[type='email']";
         try {
-            page.locator("input[type='email']").first().fill(email);
+            page.locator(selector).first().fill(email);
         } catch (TimeoutError e) {
-            throw new EmailFieldNotFoundException(admissionURL, "input[type='email']");
+            throw new EmailFieldNotFoundException(admissionURL, selector);
         }
     }
 
     void fillPasswordField(String password) throws PasswordFieldNotFoundException {
+        String selector = "input[type='password']";
         try {
-            page.locator("input[type='password']").first().fill(password);
+            page.locator(selector).first().fill(password);
         } catch (TimeoutError e) {
-            throw new PasswordFieldNotFoundException(admissionURL, "input[type='password']");
+            throw new PasswordFieldNotFoundException(admissionURL, selector);
         }
     }
 
@@ -71,7 +75,13 @@ public class Roboto implements AutoCloseable {
         return page;
     }
 
-	public void clickSubmitButton() {
-	}
+    void clickSubmitButton() throws ConnectionButtonNotFoundException {
+        String selector = "[type='submit']";
+        try {
+            page.locator(selector).first().click();
+        } catch (TimeoutError e) {
+            throw new ConnectionButtonNotFoundException(admissionURL, selector);
+        }
+    }
 
 }
