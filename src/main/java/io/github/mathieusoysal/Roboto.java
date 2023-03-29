@@ -41,7 +41,6 @@ public class Roboto implements AutoCloseable {
 
     public void connection(String email, String password)
             throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException {
-        page.setDefaultTimeout(5000);
         fillEmailField(email);
         fillPasswordField(password);
         clickSubmitButton();

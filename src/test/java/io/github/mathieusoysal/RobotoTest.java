@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Page;
 
+import io.github.mathieusoysal.exceptions.ConnectionButtonNotFoundException;
 import io.github.mathieusoysal.exceptions.EmailFieldNotFoundException;
 import io.github.mathieusoysal.exceptions.PasswordFieldNotFoundException;
 
@@ -46,6 +47,7 @@ class RobotoTest {
     @Test
     void emailConnection_witWrongURL_test() {
         Roboto roboto = new Roboto("https://playwright.dev");
+        roboto.getPage().setDefaultTimeout(1000);
         assertThrows(EmailFieldNotFoundException.class, () -> {
             roboto.fillEmailField("email");
         });
@@ -55,6 +57,7 @@ class RobotoTest {
     @Test
     void passwordConnection_witWrongURL_test() {
         Roboto roboto = new Roboto("https://playwright.dev");
+        roboto.getPage().setDefaultTimeout(1000);
         assertThrows(PasswordFieldNotFoundException.class, () -> {
             roboto.fillPasswordField("password");
         });
@@ -75,6 +78,16 @@ class RobotoTest {
                         ×
 
                         """);
+        roboto.close();
+    }
+
+    @Test
+    void clickSubmitButton_witWrongURL_test() {
+        Roboto roboto = new Roboto("https://playwright.dev");
+        roboto.getPage().setDefaultTimeout(1000);
+        assertThrows(ConnectionButtonNotFoundException.class, () -> {
+            roboto.clickSubmitButton();
+        });
         roboto.close();
     }
 
