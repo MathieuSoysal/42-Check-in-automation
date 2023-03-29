@@ -71,4 +71,7 @@ public class Roboto implements AutoCloseable {
         return page;
     }
 
+	public void clickSubmitButton() {
+	}
+
 }

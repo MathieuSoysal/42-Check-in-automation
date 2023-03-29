@@ -61,4 +61,15 @@ class RobotoTest {
         roboto.close();
     }
 
+    @Test
+    void clickSubmitButton_test() {
+        Roboto roboto = new Roboto();
+        assertDoesNotThrow(() -> {
+            roboto.connection("email", "password");
+            roboto.clickSubmitButton();
+        });
+        assertThat(roboto.getPage().locator("div[role='alert']").first()).hasValue("email ou mot de passe incorrect.");
+        roboto.close();
+    }
+
 }
