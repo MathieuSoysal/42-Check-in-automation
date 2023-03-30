@@ -2,6 +2,7 @@ package io.github.mathieusoysal;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -88,6 +89,17 @@ class RobotoTest {
         assertThrows(ConnectionButtonNotFoundException.class, () -> {
             roboto.clickSubmitButton();
         });
+        roboto.close();
+    }
+
+    @Test
+    void clickSubmitButton_withGoodLogin_test() {
+        Roboto roboto = new Roboto();
+        assertDoesNotThrow(() -> {
+            roboto.connection(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
+            roboto.clickSubmitButton();
+        });
+        assertEquals("42 à Paris | Candidats De La Présentation", roboto.getPage().title());
         roboto.close();
     }
 
