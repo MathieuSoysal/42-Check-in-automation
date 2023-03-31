@@ -3,11 +3,13 @@ package io.github.mathieusoysal;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.TimeoutError;
 
 import io.github.mathieusoysal.exceptions.ConnectionButtonNotFoundException;
 import io.github.mathieusoysal.exceptions.EmailFieldNotFoundException;
@@ -27,7 +29,7 @@ class RobotoTest {
     void connection_withEmail_test() {
         Roboto roboto = new Roboto();
         assertDoesNotThrow(() -> {
-            roboto.connection("email", "password");
+            roboto.fillEmailField("email");
         });
         Page page = roboto.getPage();
         assertThat(page.locator("input[type='email']").first()).hasValue("email");
@@ -38,7 +40,7 @@ class RobotoTest {
     void connection_withPassword_test() {
         Roboto roboto = new Roboto();
         assertDoesNotThrow(() -> {
-            roboto.connection("email", "password");
+            roboto.fillPasswordField("password");
         });
         Page page = roboto.getPage();
         assertThat(page.locator("input[type='password']").first()).hasValue("password");
@@ -66,12 +68,10 @@ class RobotoTest {
     }
 
     @Test
-    void clickSubmitButton_test() throws InterruptedException {
+    void clickSubmitButton_withBadLogin_test() throws InterruptedException, EmailFieldNotFoundException,
+            PasswordFieldNotFoundException, ConnectionButtonNotFoundException {
         Roboto roboto = new Roboto();
-        assertDoesNotThrow(() -> {
-            roboto.connection("email", "password");
-            roboto.clickSubmitButton();
-        });
+        roboto.connection("email", "password");
         assertThat(roboto.getPage().locator("div[role='alert']").first()).hasText(
                 """
                         email ou mot de passe incorrect.
@@ -83,23 +83,22 @@ class RobotoTest {
     }
 
     @Test
+    void clickSubmitButton_withGoodLogin_test()
+            throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException {
+        Roboto roboto = new Roboto();
+        assertNotEquals("42 à Paris | Candidats De La Présentation", roboto.getPage().title());
+        roboto.connection(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
+        assertEquals("42 à Paris | Candidats De La Présentation", roboto.getPage().title());
+        roboto.close();
+    }
+
+    @Test
     void clickSubmitButton_witWrongURL_test() {
         Roboto roboto = new Roboto("https://playwright.dev");
         roboto.getPage().setDefaultTimeout(1000);
         assertThrows(ConnectionButtonNotFoundException.class, () -> {
             roboto.clickSubmitButton();
         });
-        roboto.close();
-    }
-
-    @Test
-    void clickSubmitButton_withGoodLogin_test() {
-        Roboto roboto = new Roboto();
-        assertDoesNotThrow(() -> {
-            roboto.connection(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
-            roboto.clickSubmitButton();
-        });
-        assertEquals("42 à Paris | Candidats De La Présentation", roboto.getPage().title());
         roboto.close();
     }
 
