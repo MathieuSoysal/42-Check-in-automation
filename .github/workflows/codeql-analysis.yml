@@ -9,6 +9,10 @@ on:
   schedule:
     - cron: '41 14 * * 4'
 
+env:
+  TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+  TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+
 jobs:
   analyze:
     name: Analyze
