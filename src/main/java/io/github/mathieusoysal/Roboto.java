@@ -9,6 +9,7 @@ import com.microsoft.playwright.TimeoutError;
 import io.github.mathieusoysal.exceptions.ConnectionButtonNotFoundException;
 import io.github.mathieusoysal.exceptions.EmailFieldNotFoundException;
 import io.github.mathieusoysal.exceptions.PasswordFieldNotFoundException;
+import io.github.mathieusoysal.exceptions.RefusedConnectionException;
 
 /**
  * Bot to automate the 42 admissions process
@@ -40,10 +41,16 @@ public class Roboto implements AutoCloseable {
     }
 
     public void connection(String email, String password)
-            throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException {
+            throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException, RefusedConnectionException {
+        String stateBeforeConnection = page.url();
         fillEmailField(email);
         fillPasswordField(password);
         clickSubmitButton();
+        page.waitForLoadState();
+        String stateAfterConnection = page.url();
+        if (stateBeforeConnection.equals(stateAfterConnection)) {
+            throw new RefusedConnectionException();
+        }
     }
 
     void fillEmailField(String email) throws EmailFieldNotFoundException {
