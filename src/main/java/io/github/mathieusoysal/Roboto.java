@@ -6,7 +6,6 @@ import java.time.ZoneId;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.TimeoutError;
@@ -84,10 +83,27 @@ public class Roboto implements AutoCloseable {
         }
     }
 
+    public void refreshPage() {
+        page.reload();
+    }
+
+    public boolean checkinButtonIsPresent() {
+        page.waitForLoadState();
+        return page.locator(
+                "input[type='submit'] :not([value='Enregistrement impossible']) :not([value='Can not subscribe'])")
+                .last().isVisible();
+    }
+
+    public void subcribeToCheckIn() {
+        validateCaptcha();
+        clickOnSubscription();
+    }
+
     @Override
     public void close() {
         if (telemetry) {
-            String archiveName = trace + "-" + LocalDateTime.now(ZoneId.systemDefault()).toString().replaceAll(":", "-") + ".zip";
+            String archiveName = trace + "-" + LocalDateTime.now(ZoneId.systemDefault()).toString().replaceAll(":", "-")
+                    + ".zip";
             context.tracing().stop(new Tracing.StopOptions()
                     .setPath(Paths.get(archiveName)));
             context.close();
@@ -128,6 +144,20 @@ public class Roboto implements AutoCloseable {
             trace = "ConnectionButtonNotFound";
             throw new ConnectionButtonNotFoundException(admissionURL, selector);
         }
+    }
+
+    void validateCaptcha() {
+        page.locator("body").click();
+        page.locator("body").press("Tab");
+        page.locator("body").press("Enter");
+        page.waitForLoadState();
+        // TODO: Add a check to see if the captcha is present
+    }
+
+    void clickOnSubscription() {
+        page.locator("input[type='submit'] :not([value='Enregistrement impossible']) :not([value='Can not subscribe'])")
+                .last().click();
+        // TODO: Add a check to see if the subscription is successful
     }
 
 }

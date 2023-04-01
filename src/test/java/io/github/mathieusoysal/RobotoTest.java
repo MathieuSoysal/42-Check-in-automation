@@ -3,16 +3,13 @@ package io.github.mathieusoysal;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.TimeoutError;
 
 import io.github.mathieusoysal.exceptions.ConnectionButtonNotFoundException;
 import io.github.mathieusoysal.exceptions.EmailFieldNotFoundException;
@@ -107,6 +104,26 @@ class RobotoTest {
             roboto.clickSubmitButton();
         });
         roboto.close();
+    }
+
+    @Test
+    void checkinButtonIsPresent_test() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
+            ConnectionButtonNotFoundException, RefusedConnectionException {
+        Roboto roboto = new Roboto(false);
+        roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
+        assertFalse(roboto.checkinButtonIsPresent());
+        roboto.close();
+        // TODO: find a way to test the checkin button
+    }
+
+    @Test
+    void captachaTest() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
+            ConnectionButtonNotFoundException, RefusedConnectionException {
+        Roboto roboto = new Roboto("https://www.google.com/recaptcha/api2/demo");
+        roboto.getPage().setDefaultTimeout(6000);
+        roboto.validateCaptcha();
+        roboto.close();
+        // TODO: find a way to test the captcha
     }
 
 }

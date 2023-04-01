@@ -25,5 +25,6 @@
 	"runArgs": [
 		"--env-file",
 		".devcontainer/devcontainer.env"
-	]
+	],
+	"postCreateCommand": "mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args=\"install-deps\""
 }
