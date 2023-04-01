@@ -14,6 +14,7 @@ import com.microsoft.playwright.TimeoutError;
 import io.github.mathieusoysal.exceptions.ConnectionButtonNotFoundException;
 import io.github.mathieusoysal.exceptions.EmailFieldNotFoundException;
 import io.github.mathieusoysal.exceptions.PasswordFieldNotFoundException;
+import io.github.mathieusoysal.exceptions.RefusedConnectionException;
 
 class RobotoTest {
 
@@ -69,9 +70,11 @@ class RobotoTest {
 
     @Test
     void clickSubmitButton_withBadLogin_test() throws InterruptedException, EmailFieldNotFoundException,
-            PasswordFieldNotFoundException, ConnectionButtonNotFoundException {
+            PasswordFieldNotFoundException, ConnectionButtonNotFoundException, RefusedConnectionException {
         Roboto roboto = new Roboto();
-        roboto.connection("email", "password");
+        assertThrows(RefusedConnectionException.class, () -> {
+            roboto.connection("email", "password");
+        });
         assertThat(roboto.getPage().locator("div[role='alert']").first()).hasText(
                 """
                         email ou mot de passe incorrect.
@@ -84,7 +87,8 @@ class RobotoTest {
 
     @Test
     void clickSubmitButton_withGoodLogin_test()
-            throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException {
+            throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException,
+            RefusedConnectionException {
         Roboto roboto = new Roboto();
         assertNotEquals("42 à Paris | Candidats De La Présentation", roboto.getPage().title());
         roboto.connection(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
