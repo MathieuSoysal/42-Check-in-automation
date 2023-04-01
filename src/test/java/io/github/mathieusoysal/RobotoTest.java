@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,14 +24,14 @@ class RobotoTest {
     @Test
     void initTest() {
         assertDoesNotThrow(() -> {
-            Roboto roboto = new Roboto();
+            Roboto roboto = new Roboto(false);
             roboto.close();
         });
     }
 
     @Test
     void connection_withEmail_test() {
-        Roboto roboto = new Roboto();
+        Roboto roboto = new Roboto(false);
         assertDoesNotThrow(() -> {
             roboto.fillEmailField("email");
         });
@@ -39,7 +42,7 @@ class RobotoTest {
 
     @Test
     void connection_withPassword_test() {
-        Roboto roboto = new Roboto();
+        Roboto roboto = new Roboto(false);
         assertDoesNotThrow(() -> {
             roboto.fillPasswordField("password");
         });
@@ -50,7 +53,7 @@ class RobotoTest {
 
     @Test
     void emailConnection_witWrongURL_test() {
-        Roboto roboto = new Roboto("https://playwright.dev");
+        Roboto roboto = new Roboto("https://playwright.dev", false);
         roboto.getPage().setDefaultTimeout(1000);
         assertThrows(EmailFieldNotFoundException.class, () -> {
             roboto.fillEmailField("email");
@@ -60,7 +63,7 @@ class RobotoTest {
 
     @Test
     void passwordConnection_witWrongURL_test() {
-        Roboto roboto = new Roboto("https://playwright.dev");
+        Roboto roboto = new Roboto("https://playwright.dev", false);
         roboto.getPage().setDefaultTimeout(1000);
         assertThrows(PasswordFieldNotFoundException.class, () -> {
             roboto.fillPasswordField("password");
@@ -71,9 +74,9 @@ class RobotoTest {
     @Test
     void clickSubmitButton_withBadLogin_test() throws InterruptedException, EmailFieldNotFoundException,
             PasswordFieldNotFoundException, ConnectionButtonNotFoundException, RefusedConnectionException {
-        Roboto roboto = new Roboto();
+        Roboto roboto = new Roboto(false);
         assertThrows(RefusedConnectionException.class, () -> {
-            roboto.connection("email", "password");
+            roboto.connect("email", "password");
         });
         assertThat(roboto.getPage().locator("div[role='alert']").first()).hasText(
                 """
@@ -89,16 +92,16 @@ class RobotoTest {
     void clickSubmitButton_withGoodLogin_test()
             throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException,
             RefusedConnectionException {
-        Roboto roboto = new Roboto();
+        Roboto roboto = new Roboto(false);
         assertNotEquals("42 à Paris | Candidats De La Présentation", roboto.getPage().title());
-        roboto.connection(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
+        roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
         assertEquals("42 à Paris | Candidats De La Présentation", roboto.getPage().title());
         roboto.close();
     }
 
     @Test
     void clickSubmitButton_witWrongURL_test() {
-        Roboto roboto = new Roboto("https://playwright.dev");
+        Roboto roboto = new Roboto("https://playwright.dev", false);
         roboto.getPage().setDefaultTimeout(1000);
         assertThrows(ConnectionButtonNotFoundException.class, () -> {
             roboto.clickSubmitButton();
