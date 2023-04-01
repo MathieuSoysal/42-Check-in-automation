@@ -86,7 +86,7 @@ public class Roboto implements AutoCloseable {
     @Override
     public void close() {
         if (telemetry) {
-            String archiveName = trace + "-" + LocalDateTime.now().toString().replaceAll(":", "-") + ".zip";
+            String archiveName = trace + "-" + LocalDateTime.now(ZoneId.systemDefault()).toString().replaceAll(":", "-") + ".zip";
             context.tracing().stop(new Tracing.StopOptions()
                     .setPath(Paths.get(archiveName)));
             context.close();
