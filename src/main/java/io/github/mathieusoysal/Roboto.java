@@ -1,10 +1,15 @@
 package io.github.mathieusoysal;
 
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+
 import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.TimeoutError;
+import com.microsoft.playwright.Tracing;
 
 import io.github.mathieusoysal.exceptions.ConnectionButtonNotFoundException;
 import io.github.mathieusoysal.exceptions.EmailFieldNotFoundException;
@@ -28,20 +33,44 @@ public class Roboto implements AutoCloseable {
 
     private Browser browser;
 
-    public Roboto(final String admissionURL) {
-        this.admissionURL = admissionURL;
+    private BrowserContext context;
+
+    private String trace = "Archive";
+
+    private boolean telemetry = true;
+
+    public Roboto(final String admissionURL, final boolean telemetry) {
+        this.telemetry = telemetry;
         playwright = Playwright.create();
         browser = playwright.chromium().launch();
-        page = browser.newPage();
+        if (telemetry) {
+            context = browser.newContext();
+            context.tracing().start(new Tracing.StartOptions()
+                    .setScreenshots(true)
+                    .setSnapshots(true));
+            page = context.newPage();
+        } else {
+            page = browser.newPage();
+        }
+        this.admissionURL = admissionURL;
         page.navigate(admissionURL);
     }
 
-    public Roboto() {
-        this(URL);
+    public Roboto(String admissionURL) {
+        this(admissionURL, true);
     }
 
-    public void connection(String email, String password)
-            throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException, RefusedConnectionException {
+    public Roboto(final boolean telemetry) {
+        this(URL, telemetry);
+    }
+
+    public Roboto() {
+        this(true);
+    }
+
+    public void connect(String email, String password)
+            throws EmailFieldNotFoundException, PasswordFieldNotFoundException, ConnectionButtonNotFoundException,
+            RefusedConnectionException {
         String stateBeforeConnection = page.url();
         fillEmailField(email);
         fillPasswordField(password);
@@ -49,8 +78,25 @@ public class Roboto implements AutoCloseable {
         page.waitForLoadState();
         String stateAfterConnection = page.url();
         if (stateBeforeConnection.equals(stateAfterConnection)) {
+            trace = "RefusedConnection";
             throw new RefusedConnectionException();
         }
+    }
+
+    @Override
+    public void close() {
+        if (telemetry) {
+            String archiveName = trace + "-" + LocalDateTime.now().toString().replaceAll(":", "-") + ".zip";
+            context.tracing().stop(new Tracing.StopOptions()
+                    .setPath(Paths.get(archiveName)));
+            context.close();
+        }
+        browser.close();
+        playwright.close();
+    }
+
+    public Page getPage() {
+        return page;
     }
 
     void fillEmailField(String email) throws EmailFieldNotFoundException {
@@ -58,6 +104,7 @@ public class Roboto implements AutoCloseable {
         try {
             page.locator(selector).first().fill(email);
         } catch (TimeoutError e) {
+            trace = "EmailFieldNotFound";
             throw new EmailFieldNotFoundException(admissionURL, selector);
         }
     }
@@ -67,18 +114,9 @@ public class Roboto implements AutoCloseable {
         try {
             page.locator(selector).first().fill(password);
         } catch (TimeoutError e) {
+            trace = "PasswordFieldNotFound";
             throw new PasswordFieldNotFoundException(admissionURL, selector);
         }
-    }
-
-    @Override
-    public void close() {
-        browser.close();
-        playwright.close();
-    }
-
-    public Page getPage() {
-        return page;
     }
 
     void clickSubmitButton() throws ConnectionButtonNotFoundException {
@@ -86,6 +124,7 @@ public class Roboto implements AutoCloseable {
         try {
             page.locator(selector).first().click();
         } catch (TimeoutError e) {
+            trace = "ConnectionButtonNotFound";
             throw new ConnectionButtonNotFoundException(admissionURL, selector);
         }
     }
