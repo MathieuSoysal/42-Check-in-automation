@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import com.github.forax.beautifullogger.Logger;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
@@ -22,6 +23,8 @@ import io.github.mathieusoysal.exceptions.RefusedConnectionException;
  * 
  */
 public class Roboto implements AutoCloseable {
+
+    private static final Logger LOGGER = Logger.getLogger();
 
     private static final String URL = "https://admissions.42.fr";
 
@@ -53,7 +56,9 @@ public class Roboto implements AutoCloseable {
             page = browser.newPage();
         }
         this.admissionURL = admissionURL;
+        LOGGER.info(() -> "Roboto is ready to connect to " + admissionURL);
         page.navigate(admissionURL);
+        LOGGER.info(() -> "Roboto is connected to " + admissionURL);
     }
 
     public Roboto(String admissionURL) {
@@ -81,10 +86,12 @@ public class Roboto implements AutoCloseable {
             trace = "RefusedConnection";
             throw new RefusedConnectionException();
         }
+        LOGGER.info(() -> "Roboto is signed in to " + admissionURL);
     }
 
     public void refreshPage() {
         page.reload();
+        LOGGER.info(() -> "Page refreshed");
     }
 
     public boolean checkinButtonIsPresent() {
@@ -122,16 +129,20 @@ public class Roboto implements AutoCloseable {
             page.locator(selector).first().fill(email);
         } catch (TimeoutError e) {
             trace = "EmailFieldNotFound";
+            LOGGER.error("Email field not found", e);
             throw new EmailFieldNotFoundException(admissionURL, selector);
         }
+        LOGGER.info(() -> "Email filled");
     }
 
     void fillPasswordField(String password) throws PasswordFieldNotFoundException {
         String selector = "input[type='password']";
         try {
             page.locator(selector).first().fill(password);
+            LOGGER.info(() -> "Password filled");
         } catch (TimeoutError e) {
             trace = "PasswordFieldNotFound";
+            LOGGER.error("Password field not found", e);
             throw new PasswordFieldNotFoundException(admissionURL, selector);
         }
     }
@@ -140,8 +151,10 @@ public class Roboto implements AutoCloseable {
         String selector = "[type='submit']";
         try {
             page.locator(selector).first().click();
+            LOGGER.info(() -> "Submit button clicked");
         } catch (TimeoutError e) {
             trace = "ConnectionButtonNotFound";
+            LOGGER.error("Connection button not found", e);
             throw new ConnectionButtonNotFoundException(admissionURL, selector);
         }
     }
@@ -151,12 +164,14 @@ public class Roboto implements AutoCloseable {
         page.locator("body").press("Tab");
         page.locator("body").press("Enter");
         page.waitForLoadState();
+        LOGGER.info(() -> "Captcha validated");
         // TODO: Add a check to see if the captcha is present
     }
 
     void clickOnSubscription() {
         page.locator("input[type='submit'] :not([value='Enregistrement impossible']) :not([value='Can not subscribe'])")
                 .last().click();
+        LOGGER.info(() -> "Subscription clicked");
         // TODO: Add a check to see if the subscription is successful
     }
 
