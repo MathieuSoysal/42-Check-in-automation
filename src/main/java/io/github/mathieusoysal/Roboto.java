@@ -84,6 +84,7 @@ public class Roboto implements AutoCloseable {
         String stateAfterConnection = page.url();
         if (stateBeforeConnection.equals(stateAfterConnection)) {
             trace = "RefusedConnection";
+            LOGGER.error(() -> "Connection refused");
             throw new RefusedConnectionException();
         }
         LOGGER.info(() -> "Roboto is signed in to " + admissionURL);
