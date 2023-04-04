@@ -118,6 +118,7 @@ public class Roboto implements AutoCloseable {
         }
         browser.close();
         playwright.close();
+        LOGGER.info(() -> "Roboto is closed");
     }
 
     public Page getPage() {
