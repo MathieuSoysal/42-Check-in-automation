@@ -28,4 +28,11 @@ public class AppTest {
         });
     }
 
+    @Test
+    void testCheckAllEnvVariables() {
+        assertDoesNotThrow(() -> {
+            App.checkAllEnvVariables();
+        });
+    }
+
 }
