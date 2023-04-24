@@ -43,7 +43,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.7</version>
+                        <version>0.8.9</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
@@ -127,7 +127,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.0-M9</version>
             </plugin>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -169,7 +169,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
+                <version>0.8.9</version>
                 <executions>
                     <execution>
                         <goals>
