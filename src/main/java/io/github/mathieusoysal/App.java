@@ -34,7 +34,7 @@ public class App {
             if (System.getenv(name) == null)
                 notFound.add(name);
         }
-        if (notFound.size() > 0) {
+        if (!notFound.isEmpty()) {
             throw new EnvironementVariableNotFoundException(notFound.toArray(new String[0]));
         }
     }
