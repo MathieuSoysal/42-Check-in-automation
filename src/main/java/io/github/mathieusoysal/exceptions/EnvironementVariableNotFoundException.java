@@ -2,8 +2,9 @@ package io.github.mathieusoysal.exceptions;
 
 public class EnvironementVariableNotFoundException extends Exception {
 
-    public EnvironementVariableNotFoundException(String name) {
-        super("Please set the " + name + " environment variable");
+    public EnvironementVariableNotFoundException(String... names) {
+        super("Please set the following environment variable"
+                + (names.length > 1 ? "s" : "") + ": " + String.join(", ", names));
     }
 
 }
