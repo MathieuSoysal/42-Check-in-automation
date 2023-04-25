@@ -23,4 +23,11 @@ public class AppTest {
         });
     }
 
+    @Test
+    void testCheckAllEnvVariables3() {
+        assertThrows(EnvironementVariableNotFoundException.class, () -> {
+            App.checkAllEnvVariables("null");
+        });
+    }
+
 }
