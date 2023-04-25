@@ -69,6 +69,13 @@
         </profile>
     </profiles>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Dependencies -->
 
@@ -108,6 +115,11 @@
             <artifactId>mockito-inline</artifactId>
             <version>4.0.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.forax</groupId>
+            <artifactId>beautiful_logger</artifactId>
+            <version>master-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
