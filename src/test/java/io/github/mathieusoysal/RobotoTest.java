@@ -124,8 +124,8 @@ class RobotoTest {
         Roboto roboto = new Roboto(false);
         roboto.getPage().setDefaultTimeout(1000);
         roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
-        assertTrue(roboto.checkinButtonIsNotPresent());
-        assertTrue(roboto.checkinButtonIsNotPresent());
+        assertFalse(roboto.checkinButtonIsPresent());
+        assertFalse(roboto.checkinButtonIsPresent());
     }
 
 }

@@ -97,11 +97,11 @@ public class Roboto implements AutoCloseable {
         LOGGER.info(() -> "Page refreshed");
     }
 
-    public boolean checkinButtonIsNotPresent() {
+    public boolean checkinButtonIsPresent() {
         page.waitForLoadState();
         if (pageContent.equals(""))
             pageContent = page.content();
-        return pageContent.equals(page.content());
+        return !pageContent.equals(page.content());
     }
 
     public void subcribeToCheckIn() {
@@ -112,7 +112,8 @@ public class Roboto implements AutoCloseable {
     @Override
     public void close() {
         if (telemetry) {
-            String archiveName = trace + "-" + LocalDateTime.now(ZoneId.systemDefault()).toString().replaceAll(":", "-")
+            String archiveName = "archive/" + trace + "-"
+                    + LocalDateTime.now(ZoneId.systemDefault()).toString().replaceAll(":", "-")
                     + ".zip";
             context.tracing().stop(new Tracing.StopOptions()
                     .setPath(Paths.get(archiveName)));
