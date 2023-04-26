@@ -109,17 +109,6 @@ class RobotoTest {
     }
 
     @Test
-    @Disabled("Need to have html chekin page")
-    void checkinButtonIsPresent_test() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
-            ConnectionButtonNotFoundException, RefusedConnectionException {
-        Roboto roboto = new Roboto(false);
-        roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
-        assertFalse(roboto.checkinButtonIsNotPresent());
-        roboto.close();
-        // TODO: find a way to test the checkin button
-    }
-
-    @Test
     void captachaTest() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
             ConnectionButtonNotFoundException, RefusedConnectionException {
         Roboto roboto = new Roboto("https://www.google.com/recaptcha/api2/demo");
