@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Page;
@@ -108,6 +109,7 @@ class RobotoTest {
     }
 
     @Test
+    @Disabled("Need to have html chekin page")
     void checkinButtonIsPresent_test() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
             ConnectionButtonNotFoundException, RefusedConnectionException {
         Roboto roboto = new Roboto(false);
