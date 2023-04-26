@@ -42,6 +42,8 @@ public class Roboto implements AutoCloseable {
 
     private boolean telemetry = true;
 
+    private String pageContent = "";
+
     public Roboto(final String admissionURL, final boolean telemetry) {
         this.telemetry = telemetry;
         playwright = Playwright.create();
@@ -81,10 +83,10 @@ public class Roboto implements AutoCloseable {
         fillPasswordField(password);
         clickSubmitButton();
         page.waitForLoadState();
-        String stateAfterConnection = page.url();
-        if (stateBeforeConnection.equals(stateAfterConnection)) {
+        String currentState = page.url();
+        if (stateBeforeConnection.equals(currentState)) {
             trace = "RefusedConnection";
-            LOGGER.error(() -> "Connection refused");
+            LOGGER.error(() -> "Connection refused check your credentials");
             throw new RefusedConnectionException();
         }
         LOGGER.info(() -> "Roboto is signed in to " + admissionURL);
@@ -95,11 +97,11 @@ public class Roboto implements AutoCloseable {
         LOGGER.info(() -> "Page refreshed");
     }
 
-    public boolean checkinButtonIsPresent() {
+    public boolean checkinButtonIsNotPresent() {
         page.waitForLoadState();
-        return page.locator(
-                "input[type='submit'] :not([value='Enregistrement impossible']) :not([value='Can not subscribe'])")
-                .last().isVisible();
+        if (pageContent.equals(""))
+            pageContent = page.content();
+        return pageContent.equals(page.content());
     }
 
     public void subcribeToCheckIn() {
@@ -171,9 +173,9 @@ public class Roboto implements AutoCloseable {
     }
 
     void clickOnSubscription() {
-        page.locator("input[type='submit'] :not([value='Enregistrement impossible']) :not([value='Can not subscribe'])")
-                .last().click();
-        LOGGER.info(() -> "Subscription clicked");
+        // page.locator("input[type='submit'] :not([value='Enregistrement impossible'])
+        // :not([value='Can not subscribe'])").last().click();
+        // LOGGER.info(() -> "Subscription clicked");
         // TODO: Add a check to see if the subscription is successful
     }
 

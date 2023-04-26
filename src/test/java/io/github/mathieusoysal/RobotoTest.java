@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -111,7 +112,7 @@ class RobotoTest {
             ConnectionButtonNotFoundException, RefusedConnectionException {
         Roboto roboto = new Roboto(false);
         roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
-        assertFalse(roboto.checkinButtonIsPresent());
+        assertFalse(roboto.checkinButtonIsNotPresent());
         roboto.close();
         // TODO: find a way to test the checkin button
     }
@@ -124,6 +125,16 @@ class RobotoTest {
         roboto.validateCaptcha();
         roboto.close();
         // TODO: find a way to test the captcha
+    }
+
+    @Test
+    void testCheckinButtonIsNotPresent() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
+            ConnectionButtonNotFoundException, RefusedConnectionException {
+        Roboto roboto = new Roboto(false);
+        roboto.getPage().setDefaultTimeout(1000);
+        roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
+        assertTrue(roboto.checkinButtonIsNotPresent());
+        assertTrue(roboto.checkinButtonIsNotPresent());
     }
 
 }
