@@ -25,6 +25,9 @@ jobs:
         run: mvn compile
       - name: Run
         run: mvn exec:java -Dexec.mainClass="io.github.mathieusoysal.App"
+        env:
+          TEST_MAIL: ${{ secrets.TEST_MAIL }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
       - name: Save trace
         uses: JamesIves/github-pages-deploy-action@v4.4.1
