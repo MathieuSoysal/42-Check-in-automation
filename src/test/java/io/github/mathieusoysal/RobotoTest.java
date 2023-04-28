@@ -123,6 +123,7 @@ class RobotoTest {
             ConnectionButtonNotFoundException, RefusedConnectionException {
         Roboto roboto = new Roboto(false);
         roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
+        roboto.refreshPage();
         assertFalse(roboto.checkinButtonIsPresent());
         roboto.refreshPage();
         assertFalse(roboto.checkinButtonIsPresent());
