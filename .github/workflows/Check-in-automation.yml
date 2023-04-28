@@ -1,4 +1,4 @@
-name: JIB container publish
+name: Check-In automation
 
 on:
   workflow_dispatch:
