@@ -32,7 +32,7 @@ jobs:
       - name: Save trace
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
-          token: ${{ inputs.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: archive
           clean: false
           folder: archive
