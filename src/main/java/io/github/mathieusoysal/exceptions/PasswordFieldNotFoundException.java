@@ -7,9 +7,4 @@ public class PasswordFieldNotFoundException extends RobotoException {
     public PasswordFieldNotFoundException(String url, String cssSelector) {
         super("Password field not found on: " + url + " with CSS selector:" + cssSelector);
     }
-
-    @Override
-    public String getErrorType() {
-        return "PasswordFieldNotFoundException";
-    }
 }
