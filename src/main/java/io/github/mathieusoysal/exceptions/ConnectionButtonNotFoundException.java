@@ -8,9 +8,4 @@ public class ConnectionButtonNotFoundException extends RobotoException {
         super("Connection button not found on " + url + " with selector " + selector);
     }
 
-    @Override
-    public String getErrorType() {
-        return "ConnectionButtonNotFoundException";
-    }
-
 }

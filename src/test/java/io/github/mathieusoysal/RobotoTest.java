@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Page;
@@ -107,16 +109,6 @@ class RobotoTest {
     }
 
     @Test
-    void checkinButtonIsPresent_test() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
-            ConnectionButtonNotFoundException, RefusedConnectionException {
-        Roboto roboto = new Roboto(false);
-        roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
-        assertFalse(roboto.checkinButtonIsPresent());
-        roboto.close();
-        // TODO: find a way to test the checkin button
-    }
-
-    @Test
     void captachaTest() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
             ConnectionButtonNotFoundException, RefusedConnectionException {
         Roboto roboto = new Roboto("https://www.google.com/recaptcha/api2/demo");
@@ -124,6 +116,16 @@ class RobotoTest {
         roboto.validateCaptcha();
         roboto.close();
         // TODO: find a way to test the captcha
+    }
+
+    @Test
+    void testCheckinButtonIsNotPresent() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
+            ConnectionButtonNotFoundException, RefusedConnectionException {
+        Roboto roboto = new Roboto(false);
+        roboto.getPage().setDefaultTimeout(5000);
+        roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
+        assertFalse(roboto.checkinButtonIsPresent());
+        assertFalse(roboto.checkinButtonIsPresent());
     }
 
 }
