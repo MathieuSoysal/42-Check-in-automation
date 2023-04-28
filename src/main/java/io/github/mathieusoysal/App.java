@@ -17,7 +17,8 @@ public class App {
         try (Roboto roboto = new Roboto()) {
             checkAllEnvVariables(ENV_NAME_MAIL, ENV_NAME_PASSWORD);
             roboto.connect(System.getenv(ENV_NAME_MAIL), System.getenv(ENV_NAME_PASSWORD));
-            while (roboto.checkinButtonIsPresent())
+            roboto.refreshPage();
+            while (!roboto.checkinButtonIsPresent())
                 roboto.refreshPage();
             roboto.clickOnSubscription();
         } catch (RobotoException e) {
