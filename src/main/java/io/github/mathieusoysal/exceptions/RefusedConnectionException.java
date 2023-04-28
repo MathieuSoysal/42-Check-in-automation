@@ -6,9 +6,4 @@ public class RefusedConnectionException extends RobotoException {
         super("Connection refused, please check your login and password.");
     }
 
-    @Override
-    public String getErrorType() {
-        return "RefusedConnectionException";
-    }
-
 }

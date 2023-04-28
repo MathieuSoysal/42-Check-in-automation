@@ -8,9 +8,4 @@ public class EmailFieldNotFoundException extends RobotoException {
         super("Email field not found on: " + url + " with CSS selector:" + cssSelector);
     }
 
-    @Override
-    public String getErrorType() {
-        return "EmailFieldNotFoundException";
-    }
-
 }
