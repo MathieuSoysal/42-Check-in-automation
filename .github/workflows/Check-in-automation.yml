@@ -26,7 +26,7 @@ jobs:
       - name: Run
         run: mvn exec:java -Dexec.mainClass="io.github.mathieusoysal.App"
         env:
-          TEST_MAIL: ${{ secrets.TEST_MAIL }}
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
       - name: Save trace
