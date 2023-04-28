@@ -1,0 +1,39 @@
+name: Check-In automation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  
+  check-in-automation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'adopt' # Alternative distribution options are available.
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build
+        run: mvn compile
+      - name: Run
+        run: mvn exec:java -Dexec.mainClass="io.github.mathieusoysal.App"
+        env:
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+
+      - name: Save trace
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          token: ${{ inputs.GITHUB_TOKEN }}
+          branch: archive
+          clean: false
+          folder: archive
+          target-folder: archive/${{ github.event.release.tag_name }}
