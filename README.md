@@ -1,6 +1,6 @@
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=MathieuSoysal_Java-Maven-Project-Template&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=MathieuSoysal_Java-Maven-Project-Template)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=MathieuSoysal_Java-Maven-Project-Template&metric=coverage)](https://sonarcloud.io/summary/new_code?id=MathieuSoysal_Java-Maven-Project-Template)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=MathieuSoysal_CodinGame-Puzzles-stats-library&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=MathieuSoysal_Java-Maven-Project-Template)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=MathieuSoysal_42-Check-in-automation&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=MathieuSoysal_42-Check-in-automation)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=MathieuSoysal_42-Check-in-automation&metric=coverage)](https://sonarcloud.io/summary/new_code?id=MathieuSoysal_42-Check-in-automation)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=MathieuSoysal_42-Check-in-automation&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=MathieuSoysal_42-Check-in-automation)
 ![GitHub Actions](https://github.com/MathieuSoysal/Java-Maven-Project-Template/workflows/Java%20CI%20with%20Maven/badge.svg)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md) 
 
