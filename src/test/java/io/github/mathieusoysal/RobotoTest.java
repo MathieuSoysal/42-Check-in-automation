@@ -122,9 +122,11 @@ class RobotoTest {
     void testCheckinButtonIsNotPresent() throws EmailFieldNotFoundException, PasswordFieldNotFoundException,
             ConnectionButtonNotFoundException, RefusedConnectionException {
         Roboto roboto = new Roboto(false);
-        roboto.getPage().setDefaultTimeout(5000);
         roboto.connect(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"));
         assertFalse(roboto.checkinButtonIsPresent());
+        roboto.refreshPage();
+        assertFalse(roboto.checkinButtonIsPresent());
+        roboto.refreshPage();
         assertFalse(roboto.checkinButtonIsPresent());
     }
 
