@@ -100,8 +100,8 @@ public class Roboto implements AutoCloseable {
     public boolean checkinButtonIsPresent() {
         page.waitForLoadState();
         if (pageContent.equals(""))
-            pageContent = page.content();
-        return !pageContent.equals(page.content());
+            pageContent = page.content().replaceAll("\".*\"", "\"\"");
+        return !pageContent.equals(page.content().replaceAll("\".*\"", "\"\""));
     }
 
     public void subcribeToCheckIn() {
