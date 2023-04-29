@@ -32,7 +32,7 @@ public class App {
     static boolean fiftenMinutesPassed() {
         if (startTime == 0)
             startTime = System.currentTimeMillis();
-        return System.currentTimeMillis() - startTime > 15 * 60 * 1000;
+        return System.currentTimeMillis() - startTime > 1.5 * 60 * 1000;
     }
 
     static void checkAllEnvVariables(String... envNames) throws EnvironementVariableNotFoundException {
