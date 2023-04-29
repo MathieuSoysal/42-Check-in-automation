@@ -2,6 +2,8 @@ name: Check-In automation
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '57-59,0-5 11 * * *'
 
 jobs:
   
@@ -32,7 +34,7 @@ jobs:
       - name: Save trace
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
-          token: ${{ inputs.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: archive
           clean: false
           folder: archive
