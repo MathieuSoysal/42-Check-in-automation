@@ -2,6 +2,8 @@ name: Check-In automation
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '57-59,0-5 11 * * *'
 
 jobs:
   
