@@ -33,7 +33,7 @@ jobs:
       - name: Build
         run: mvn compile
       - name: Run
-        run: mvn exec:java -Dexec.mainClass="io.github.mathieusoysal.App"
+        run: docker run -e TEST_EMAIL=${{ secrets.TEST_EMAIL }} -e TEST_PASSWORD=${{ secrets.TEST_PASSWORD }} ghcr.io/mathieusoysal/42-check-in-automation:latest 
         env:
           TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
