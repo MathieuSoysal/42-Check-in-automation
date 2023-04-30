@@ -3,7 +3,14 @@ name: Check-In automation
 on:
   workflow_dispatch:
   schedule:
-    - cron: '57-59,0-5 11 * * *'
+    - cron: '57 11 * * *'
+    - cron: '58 11 * * *'
+    - cron: '59 11 * * *'
+    - cron: '0 12 * * *'
+    - cron: '1 12 * * *'
+    - cron: '2 12 * * *'
+    - cron: '3 12 * * *'
+    - cron: '4 12 * * *'
 
 jobs:
   
