@@ -119,7 +119,7 @@
         <dependency>
             <groupId>com.github.forax</groupId>
             <artifactId>beautiful_logger</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>0.10.6</version>
         </dependency>
     </dependencies>
 
