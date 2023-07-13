@@ -37,7 +37,7 @@ jobs:
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
       - name: Save trace
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: archive
